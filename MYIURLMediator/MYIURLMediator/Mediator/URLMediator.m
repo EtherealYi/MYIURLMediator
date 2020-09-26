@@ -7,6 +7,8 @@
 
 #import "URLMediator.h"
 
+NSString *loacalHost = @"com.MYIURLMediator";
+
 @interface URLMediator()<NSURLSessionDelegate>
 
 @end
@@ -23,31 +25,38 @@
     return _sharedSingleton;
 }
 
-- (void)jumpToFuncID:(NSString *)funcID{
-    [self JumpToFuncID:funcID param:@""];
+- (void)pushToModuleID:(NSString *)moduleID{
+    [self pushToModuleID:moduleID param:@""];
 }
 
-- (void)JumpToFuncID:(NSString *)funcID param:(NSString *)param{
-    if (funcID.length == 0) return;
+- (void)pushToModuleID:(NSString *)moduleID param:(NSString *)param{
+    [self pushToModuleID:moduleID param:param queue:[NSOperationQueue currentQueue]];
+}
+
+- (void)pushToModuleID:(NSString *)moduleID param:(NSString *)param queue:(NSOperationQueue *)queue{
+    if (!queue) {
+        queue = [NSOperationQueue currentQueue];
+    }
+    if (moduleID.length == 0) return;
     NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"URLScheme" ofType:@"plist"];
     if (plistPath.length == 0) return;
     
     NSDictionary *dictionary = [[NSDictionary alloc] initWithContentsOfFile:plistPath];
     if (dictionary == nil) return;
     NSString *clsName;
-    if ([dictionary.allKeys containsObject:funcID]) {
-        clsName = dictionary[funcID];
+    if ([dictionary.allKeys containsObject:moduleID]) {
+        clsName = dictionary[moduleID];
     }
-    NSString *funcPath = [NSString stringWithFormat:@"%@://%@/JumpToVC/%@", @"localcall", clsName, param];
+    NSString *funcPath = [NSString stringWithFormat:@"%@://%@/pushToModule/%@", loacalHost, clsName, param];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:funcPath]];
     request.cachePolicy = NSURLRequestReturnCacheDataElseLoad;
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     config.protocolClasses = @[[NSClassFromString(@"URLSchemeProrocol") class]];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:[NSOperationQueue currentQueue]];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:queue];
     NSURLSessionTask *task = [session dataTaskWithRequest:request];
     [task resume];
-
 }
+
 
 - (UINavigationController *)getNavigationController{
     UIWindow *window = [UIApplication sharedApplication].windows[0];

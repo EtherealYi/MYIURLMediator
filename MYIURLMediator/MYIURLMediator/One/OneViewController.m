@@ -13,7 +13,7 @@
 
 @implementation OneViewController
 
-+ (void)JumpToVC:(NSString *)param{
++ (void)pushToModule:(NSString *)param{
     dispatch_async(dispatch_get_main_queue(), ^{
         OneViewController *vc = [[OneViewController alloc] init];
         [[URLMediator sharedSingleton] pushToViewController:vc];

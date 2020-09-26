@@ -49,9 +49,9 @@ static NSString *cellID = @"cellID";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     if (indexPath.row == 0) {
-        [[URLMediator sharedSingleton] JumpToFuncID:@"999" param:@"1"];
+        [[URLMediator sharedSingleton] pushToModuleID:@"999" param:@"1"];
     } else if (indexPath.row == 1) {
-        [[URLMediator sharedSingleton] JumpToFuncID:@"998" param:@"2"];
+        [[URLMediator sharedSingleton] pushToModuleID:@"998" param:@"2"];
     }
 }
 
