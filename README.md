@@ -1,6 +1,7 @@
-# MYIURLMediator
+# 基于URL Scheme的组件路由化初步尝试
 
 [博客地址](https://yizhanxiong.com/2020/09/26/%e5%9f%ba%e4%ba%8eurlscheme%e7%9a%84%e7%bb%84%e4%bb%b6%e8%b7%af%e7%94%b1%e5%8c%96%e5%88%9d%e6%ad%a5%e5%b0%9d%e8%af%95/)
+
 关于项目组件路由化的概念已经由来已久，网上的各种方案层出不穷，而最近自己也尝试了一套组件路由化的方案，仅作为抛砖引玉，希望大家一起讨论
 
 方案主要基于URLScheme方案，利用NSURLSession+NSURLProtocol实现组件路由化
